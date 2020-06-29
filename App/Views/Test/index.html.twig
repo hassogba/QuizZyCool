@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Liste des tests{% endblock %}
+
+{% block body %}
+    <div class="templatemo-content-widget white-bg col-md-12 center-block">
+        <h2 class="margin-bottom-10">Liste des tests</h2>
+        <div class="panel panel-default table-responsive">
+            <table class="table table-striped table-bordered templatemo-user-table">
+                <thead>
+                <tr>
+                    <td><a href="" class="white-text templatemo-sort-by">Num. <span class="caret"></span></a></td>
+                    <td><a href="" class="white-text templatemo-sort-by">Titre (sous-titre) <span class="caret"></span></a></td>
+                    <td>Passer test</td>
+                    <td>Exporter</td>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for test in tests %}
+                        <tr>
+                            <td>{{ test.id }}</td>
+                            <td>{{ test.titre ~ " (" ~ test.soustitre ~ ")" }}</td>
+                            <td><a href="passer-test-{{ test.id }}" class="templatemo-edit-btn"><i class="fa fa-bolt" aria-hidden="true"></i></a></td>
+                            <td><a href="exporter-test-{{ test.id }}" class="templatemo-link"><i class="fa fa-external-link-square" aria-hidden="true"></i></a></td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

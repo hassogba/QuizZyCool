@@ -1,0 +1,82 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Nouveau test{% endblock %}
+
+{% block body %}
+
+    <div class="templatemo-content-widget white-bg col-md-12 center-block">
+        <h2 class="margin-bottom-10">Nouveau test</h2>
+        <p>Veuillez renseigner les informations demandées.</p>
+        {% if errors is not empty %}
+            <br><br>
+            <div class="alert alert-danger" role="alert">
+                <strong>{{ "Erreur(s) de saisie : " }}</strong><br>
+                {% for error in errors %}
+                    {{ error }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" class="templatemo-login-form" enctype="multipart/form-data" accept-charset="utf-8">
+            <div class="row form-group">
+                <div class="col-lg-12 col-md-12 form-group">
+                    <label for="inputFirstName">Titre</label>
+                    <input required type="text" name="title" class="form-control" id="title" placeholder="Titre du test">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-12 col-md-12 form-group">
+                    <label for="inputLastName">Sous titre (consigne)</label>
+                    <input required type="text" name="subtitle" class="form-control" id="subtitle" placeholder="La consigne du test">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-12 col-md-12 form-group">
+                    <label for="text">Texte du test</label>
+                    <br/>
+                    <span>Entourez vos textes d'indication d'une mise en forme "Subscript" disponible dans le menu "Format"</span>
+                    <br/>
+                    <br/>
+                    <textarea placeholder="Minimum 100 caractères et maximum 1500 caractères." id="text" name="text"></textarea>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-6 col-md-6 form-group">
+                    <label class="control-label templatemo-block">Type de ressource</label>
+                    <select name="type" required class="form-control">
+                        <option value="">Choisir</option>
+                        <option value="image">Image</option>
+                        <option value="video">Vidéo</option>
+                        <option value="son">Son</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-12">
+                    <label class="control-label templatemo-block">Ressource</label>
+                    <input required type="file" name="ressource" id="ressource" class="filestyle" data-buttonName="btn-primary" data-buttonBefore="true" data-icon="false">
+{#                    <p>Taille maximale :  5 MB.</p>#}
+                </div>
+            </div>
+
+
+            <div class="form-group text-right">
+                <button type="reset" class="templatemo-white-button">Réinitialiser</button>
+                <button type="submit" class="templatemo-blue-button">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="https://cdn.tiny.cloud/1/4fji0sgsti9sn0s1s34u9mvqpr1a2qbx68zwejwuqueu2igh/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        tinymce.init({
+            selector: '#text'
+        });
+    </script>
+
+{% endblock %}

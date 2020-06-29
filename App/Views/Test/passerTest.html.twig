@@ -1,0 +1,70 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Passer test{% endblock %}
+
+{% block style %}
+<style>
+    .texteUser{ width: 50px; }
+
+    .correction{
+        display:inline;
+        padding:8px;
+    }
+
+    #texte
+    {
+        line-height: 3.5;
+    }
+
+    #texte p
+    {
+        display:inline;
+    }
+
+    sub
+    {
+        font-size: 11.5px;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="templatemo-flex-row flex-content-row">
+        <div class="templatemo-content-widget white-bg col-2">
+            <h2 class="templatemo-inline-block">{% if isCorrection %}{{ " Correction : " }}{% endif %}{{ test['titre'] ~ " (" ~ test['soustitre'] ~ ")" }}</h2>
+            <br><h3 class="templatemo-inline-block margin-10">{% if isCorrection %}{{ nbCorrect ~ " réponse(s) correcte(s) sur " ~ nbTotal ~ "." }}{% endif %}</h3>
+            <hr>
+            <form method="post">
+                    <div class="row">
+                    {% if test.typeressource == 1%} {# image #}
+                            <img class='img-fluid center-block' width="300" src="ressources/{{ test.ressource }}"/>
+                        {% elseif test.typeressource == 2 %} {# vidéo #}
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item" src="ressources/{{ test.ressource }}" allowfullscreen></iframe>
+                            </div>
+                        {% elseif test.typeressource == 3 %} {# audio #}
+                            <audio controls>
+                                <source src="ressources/{{ test.ressource }}" type="audio/{{ extension }}">
+                                Votre navigateur ne supporte pas la balise audio.
+                            </audio>
+                    {% endif %}
+                </div>
+                <div id="texte"></div>
+
+                {% if not isCorrection %}
+                    <input type="submit" value="Valider !" class="btn btn-success pull-right">
+                {% endif %}
+            </form>
+
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script lang="js">
+    $('#texte').html("{{ texte|raw }}")
+</script>
+{% endblock %}

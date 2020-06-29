@@ -1,0 +1,89 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Nouveau test - Choix des trous{% endblock %}
+{% block style %}
+    <style>
+        .buttonTrou{ padding: 10px;}
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="templatemo-content-widget white-bg col-md-12 center-block">
+        <h2 class="margin-bottom-10">Nouveau test - Choix des trous</h2>
+        <p>Veuillez cliquer sur les mots pour les changer en trous. Cliquer à nouveau pour en faire un texte normal.</p>
+
+
+        <form method="post" id="formTrous">
+            {% set index = 0 %}
+            {% for word in explodedText %}
+                <input onclick="definirTrou(this, this.getAttribute('data-index'), this.getAttribute('data-word'))" data-word="{{ word }}" class="btn btn-primary margin-bottom-10 margin-right-15 buttonTrou" data-index="{{ index }}"  type="button" value="{{ word|raw }}">
+                {% set index = index + 1 %}
+            {% endfor %}
+
+            <div class="row center-block">
+                <input type="submit" name="finalSubmit" value="Valider" class="btn btn-success">
+            </div>
+            {# Champ caché contenant le texte final avec les trous définis et toutes les balises HTML. #}
+            {# Le contenu de ce champ caché sera soumis et enregistré dans la bdd.#}
+            <textarea style="display:none;" cols="50" rows="10" name="finalText" id="finalText"></textarea>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script lang="js" charset="utf-8">
+
+    // $( document ).ready(function() {
+        // Récupérer le tableau de mots saisis par l'utilisateur dans une var JS
+        var textArray = {{ explodedTextBalise|json_encode|raw  }};
+
+        function definirTrou(btn, index, word) {
+            ///// Remplacer dans le tableau contenant les mots avec les balises en remplaçant le mot cliqué par sa version entourée de <trou></trou>
+
+
+            // Récupérer la case correspondante dans le tableau avec les balises
+            var originalWord = textArray[index];
+
+            // Si le mot avait déjà été défini comme étant un trou, on le retire des trous
+            if(btn.classList.contains("btn-warning")) // on met la classe aux btn représentant les trous
+            {
+                originalWord = originalWord.replace("<trou>"+word+"</trou>", word);
+
+                // Modifier le style du bouton pour différencier les trous
+                btn.classList.remove("btn-warning");
+                btn.classList.add("btn-primary");
+            }else
+            {
+                // Sinon, nouveau trou
+                // Modifier le texte pour définir le trou
+                originalWord = originalWord.replace(word, "<trou>"+word+"</trou>");
+                // on obtient au final "...<trou>LeMot</trou>..."
+
+
+                // Modifier le style du bouton pour différencier les trous
+                btn.classList.remove("btn-primary");
+                btn.classList.add("btn-warning");
+            }
+
+            // Remplacer le texte et enregistrer à nouveau
+            textArray[index] = originalWord;
+        }
+
+
+        $("#formTrous").submit(function(e){
+            // Reformer le texte en rajoutant les espaces entre chaque mot saisi
+            var value = "";
+            for (var i = 0; i < textArray.length; i++) {
+                value+=textArray[i] + " ";
+            }
+
+            $('#finalText').val(value);
+
+            // Soummetre le formulaire
+            return true;
+        });
+
+    // });
+
+</script>
+{% endblock %}
